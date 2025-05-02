@@ -1,11 +1,9 @@
-import sys
-sys.path.append("/Users/ddclarke/development/python/uvaMSDS/DS5100/finalProject")
 
 from game import Game
 import unittest
 import numpy as np
 
-from chanceRollers.theDie.die import Die
+from theDie.die import Die
 
 
 
@@ -18,7 +16,7 @@ class GameTestSuite(unittest.TestCase):
 
         with self.assertRaises(TypeError):
         #Generate TypeError by passing a set object
-            listDieOne: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
+            listDieOne: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
 
             dieOneInstance: Die = Die(listDieOne)
 
@@ -29,9 +27,9 @@ class GameTestSuite(unittest.TestCase):
 
         with self.assertRaises(TypeError):
         #Generate TypeError by passing a set object
-            listDieOne: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
-            listDieTwo: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
-            listDieThree: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
+            listDieOne: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
+            listDieTwo: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
+            listDieThree: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
 
             diceList: set = [listDieOne, listDieTwo, listDieThree]
             Game(diceList)
@@ -42,9 +40,9 @@ class GameTestSuite(unittest.TestCase):
     
         with self.assertRaises(ValueError):
             #Generate ValueError by passing an invalid option for narrow or wide
-            listDieOne: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
-            listDieTwo: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
-            listDieThree: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
+            listDieOne: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
+            listDieTwo: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
+            listDieThree: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
 
             dieOneInstance: Die = Die(listDieOne)
             dieTwoInstance: Die = Die(listDieTwo)
@@ -52,9 +50,9 @@ class GameTestSuite(unittest.TestCase):
 
 
             #Manage Die weighting
-            dieOneInstance.change_die_weight('Face2', .40)
-            dieTwoInstance.change_die_weight('Face2', .30)
-            dieThreeInstance.change_die_weight('Face2', .20)
+            dieOneInstance.change_die_weight('2', .40)
+            dieTwoInstance.change_die_weight('2', .30)
+            dieThreeInstance.change_die_weight('2', .20)
 
             diceList: list = [dieOneInstance, dieTwoInstance, dieThreeInstance]
             myInstance: Game = Game(diceList)
@@ -74,10 +72,10 @@ class GameTestSuite(unittest.TestCase):
             #Generate ValueError if all die have the same faces
             
             # The Die
-            listDieOne: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
-            listDieTwo: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
-            listDieThree: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
-            listDieFour: np.array = np.array([1.0, 2.0], dtype=float)
+            listDieOne: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
+            listDieTwo: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
+            listDieThree: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
+            listDieFour: np.array = np.array(['1', '2'], dtype=str)
 
             dieOneInstance: Die = Die(listDieOne)
             dieTwoInstance: Die = Die(listDieTwo)
@@ -85,9 +83,9 @@ class GameTestSuite(unittest.TestCase):
             dieFourInstance: Die = Die(listDieFour)
 
             #Manage Die weighting
-            dieOneInstance.change_die_weight('Face2', .40)
-            dieTwoInstance.change_die_weight('Face2', .30)
-            dieThreeInstance.change_die_weight('Face2', .20)
+            dieOneInstance.change_die_weight('2', .40)
+            dieTwoInstance.change_die_weight('2', .30)
+            dieThreeInstance.change_die_weight('2', .20)
 
             diceList: list = [dieOneInstance, dieTwoInstance, dieThreeInstance, dieFourInstance]
             myInstance: Game = Game(diceList)

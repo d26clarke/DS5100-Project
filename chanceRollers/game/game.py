@@ -2,10 +2,7 @@ import pandas as pd
 
 import numpy as np
 
-import sys
-sys.path.append("/Users/ddclarke/development/python/uvaMSDS/DS5100/finalProject")
-
-from chanceRollers.theDie.die import Die
+from theDie import Die
 
 class Game:
     """
@@ -16,7 +13,7 @@ class Game:
 
     Attributes:
        
-        self.__privateGameDataFrame (pd.DataFrame): a private variable Used to hold game results
+        self._privateGameDataFrame (pd.DataFrame): a private variable Used to hold game results
     
     Methods:
         play() 
@@ -27,7 +24,7 @@ class Game:
         """Initializes Game Class with Python list, as a single paramter, that contains one or more dice
 
             self.theDice = theDice
-            self.__privateGameDataFrame = pd.DataFrame = pd.DataFrame(emptyDict)
+            self._privateGameDataFrame = pd.DataFrame = pd.DataFrame(emptyDict)
 
 
         Args:
@@ -61,18 +58,19 @@ class Game:
         'DieId': [],
         'DieValue': []}
 
-        self.__privateGameDataFrame: pd.DataFrame = pd.DataFrame(emptyDict)
+        self._privateGameDataFrame: pd.DataFrame = pd.DataFrame(emptyDict)
 
         
         #All Die objects in list must have the same number of faces
         checkCoinFaces: bool = all(len(x.die_state()) == 2 for x in theDice)   #Two Face Coin
         checkDieFaces: bool = all(len(x.die_state()) == 6 for x in theDice)   #Six Face Die
+        checkAlphaDieFaces: bool = all(len(x.die_state()) == 26 for x in theDice)   #Alphabet Face Die
 
         #print(f"Staus of checkCoinFaces: {checkCoinFaces}\n")
         #print(f"Staus of checkDieFaces: {checkDieFaces}\n")
 
         #Raise error if die objects do not have the same number of faces
-        if checkCoinFaces == False and checkDieFaces == False:
+        if checkCoinFaces == False and checkDieFaces == False and checkAlphaDieFaces == False:
             #print(f"DEBUG1:We have an issue!\n")
             raise ValueError(f"All Die objects in list must have the same number of faces!")
         else:
@@ -82,9 +80,9 @@ class Game:
     def play(self, how_many_rolls: int) -> None:
         
         """Takes an integer parameter to specify how many times the dice should be rolled and 
-            saves the result of the play to self.__privateGameDataFrame
+            saves the result of the play to self._privateGameDataFrame
 
-            Using the playResults methond, self.__privateGameDataFrame will be returned 
+            Using the playResults methond, self._privateGameDataFrame will be returned 
             in wide format unless narrow form (n) is requested. 
 
 
@@ -100,37 +98,33 @@ class Game:
 
         print(f"Entering method play: Number of requested rolls ({how_many_rolls})\n")
 
-        print(f"Number of Die in list self.theDice: {len(self.theDice)}")
+        print(f"Number of Die in play: {len(self.theDice)}")
 
         ## Add a new row to df_empty
         #df_empty.loc[len(df_empty)] = [1, 1, 'Face2']
 
-        for roll_number in range(1,how_many_rolls + 1):
-            #print(f"Roll Number: {roll_number}\n")
-            #Roll the number of die contained in the self.theDice list
-            dieId: int = 1
-            for item in self.theDice:
-                #print(f"Current Item: {item}\n")
-                #print(f"Die ID: {dieId}\n")
-                item.roll_die()
-                dieStateDataFrame: pd.DataFrame = item.die_state()
-                #print(f"Length of dieStateDataFrame: {len(dieStateDataFrame)}")
-                #print(f"Die State: {dieStateDataFrame}")
-                #print(f"Index Names: {dieStateDataFrame.index.names}")
-                #print(f"***Result: {dieStateDataFrame[dieStateDataFrame['dieValue'].isin([1.0])]}")
-                dieFaceName: str = dieStateDataFrame[dieStateDataFrame['dieValue'].isin([1.0])].index[0]
-                #print(f"***Die Face Name: {dieFaceName}")
-                ## Add a new row to df_empty
-                self.__privateGameDataFrame.loc[len(self.__privateGameDataFrame)] = [roll_number, dieId, dieFaceName]
-                dieId+=1
+        allDieRollResults: list = []
+
+        dieID: int = 1
+        for item in self.theDice:
+            #print(f"DEBUG Die ID: {dieID}")
+            dieRoll: list = item.roll_die(how_many_rolls)
+            #print(f"DEBUG AAA: {dieRoll}")
+            dieRollResults: list = [(i + 1, dieID, dieRoll[i]) for i in range(len(dieRoll))]
+            allDieRollResults = allDieRollResults + dieRollResults
+            dieID += 1
+
+        #Save Results to private Dataframe with newly generated list
+        self._privateGameDataFrame = pd.DataFrame(allDieRollResults, columns=['RollNum', 'DieId', 'DieValue'])
+
 
 
     def playResults(self, df_frame_type: str = 'w') -> pd.DataFrame:
         
-        """Returns a copy of self.__privateGameDataFrame in wide form (w) (DEFAULT) to the user 
+        """Returns a copy of self._privateGameDataFrame in wide form (w) (DEFAULT) to the user 
            unless narrow form (n) is requested.
 
-            Using the playResults methond, self.__privateGameDataFrame will be returned 
+            Using the playResults methond, self._privateGameDataFrame will be returned 
             in wide format unless narrow form (n) is requested. 
 
 
@@ -152,19 +146,19 @@ class Game:
         if df_frame_type == "w":
             #Wide Format (DEFAULT)
             #print("Wide format DataFrame:\n", df_wide)
-            return self.__privateGameDataFrame.pivot(index='RollNum', columns='DieId', values='DieValue')
+            return self._privateGameDataFrame.pivot(index='RollNum', columns='DieId', values='DieValue')
         elif df_frame_type == "n":
             #Narrow Format
-            #return pd.MultiIndex.from_frame(self.__privateGameDataFrame)
-            return self.__privateGameDataFrame.set_index(['RollNum', 'DieId'])
+            #return pd.MultiIndex.from_frame(self._privateGameDataFrame)
+            return self._privateGameDataFrame.set_index(['RollNum', 'DieId'])
             
 
 if __name__ == '__main__':
 
     # The Die
-    listDieOne: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
-    listDieTwo: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
-    listDieThree: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
+    listDieOne: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
+    listDieTwo: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
+    listDieThree: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
     #listDieFour: np.array = np.array([1.0, 2.0], dtype=float)
 
     dieOneInstance: Die = Die(listDieOne)
@@ -173,9 +167,9 @@ if __name__ == '__main__':
     #dieFourInstance: Die = Die(listDieFour)
 
     #Manage Die weighting
-    dieOneInstance.change_die_weight('Face2', .40)
-    dieTwoInstance.change_die_weight('Face2', .30)
-    dieThreeInstance.change_die_weight('Face2', .20)
+    dieOneInstance.change_die_weight('2', .40)
+    dieTwoInstance.change_die_weight('2', .30)
+    dieThreeInstance.change_die_weight('2', .20)
 
 
     #diceList: list = [dieOneInstance, dieTwoInstance, dieThreeInstance, dieFourInstance]
@@ -183,11 +177,11 @@ if __name__ == '__main__':
     myInstance: Game = Game(diceList)
 
     #Let it roll!
-    myInstance.play(4)
+    myInstance.play(3)
 
     #The Results
     print(f"Play Results(Wide Format): \n{myInstance.playResults()}")
 
-    print(f"Play Results(Narrow Format): \n{myInstance.playResults("n")}")
+    #print(f"Play Results(Narrow Format): \n{myInstance.playResults("n")}")
 
     #print(f"Play Results(Narrow Format): \n{myInstance.playResults("x")}")

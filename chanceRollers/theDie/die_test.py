@@ -12,25 +12,25 @@ class DieTestSuite(unittest.TestCase):
 
     with self.assertRaises(ValueError):
       #Generate ValueError by passing numpy array argument that contains a set of non-distinct items  
-      theDie: np.array = np.array([1.0, 1.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
+      theDie: np.array = np.array(['1', '1', '3', '4', '5', '6'], dtype=str)
       Die(theDie)
 
   def test_2_change_die_weight(self): 
 
     with self.assertRaises(IndexError):
-      theDie: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
+      theDie: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
       myInstance: Die = Die(theDie)
       #Generate IndexError by passing a non-existent face_name argument
-      myInstance.change_die_weight('Face9', .30)
+      myInstance.change_die_weight('9', .30)
 
   def test_3_change_die_weight(self): 
 
     
     with self.assertRaises(TypeError):
-      theDie: np.array = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], dtype=float)
+      theDie: np.array = np.array(['1', '2', '3', '4', '5', '6'], dtype=str)
       myInstance: Die = Die(theDie)
       #Generate TypeError by passing new_weight argument as a string
-      myInstance.change_die_weight('Face3', '30')
+      myInstance.change_die_weight('3', '30')
 
 
     
