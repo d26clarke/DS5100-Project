@@ -125,7 +125,7 @@ class Die:
         return outcomes
     
     # Instance method die_state
-    def die_state(self) -> list:
+    def die_state(self) -> pd.DataFrame:
         """
         Takes no arguments
         
