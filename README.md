@@ -92,235 +92,64 @@ Installation:
 API description
 ----------------------
 
-class Die(builtins.object)
- |  Die(theDie: <built-in function array>) -> None
- |
- |  A class representing a Die (2-Face: Die of type Coin or 6-Face Die )
- |
- |  Attributes:
- |
- |      _privateDataFrame (pd.DataFrame): Used to hold both die face and weight data points
- |
- |  Methods:
- |      __init__():
- |      change_die_weight()
- |      roll_die()
- |      die_state()
- |
- |  Methods defined here:
- |
- |  __init__(self, theDie: <built-in function array>) -> None
- |      Initializes Die Class
- |         Initializes the weights to 1 for each die face
- |         Saves die faces and weights _privateDataFrame with die faces in the index
- |
- |      Args:
- |          theDie (np.array):  NumPy array of Die faces where array dtype(strings|numbers)
- |
- |      Raises:
- |          ValueError: If die faces are not distinct values
- |          TypeError: If die is not of type NumPy Array
- |
- |      Returns:
- |          None
- |
- |  change_die_weight(self, face_name: str, new_weight: float) -> None
- |      Takes two arguments: face_name  new_weight
- |      Checks:
- |          face_name: must exist in die array (If not, raises an IndexError)
- |          new_weight: must be of type float and castable as numeric (If not, raises a TypeError)
- |
- |      Actions:
- |          If new weight is of type float, subtract 1 from new weight to obtain the percentage which will be distributed among the
- |          remaining die faces
- |
- |          If new weight is of type int, convert integer to float  then subtract 1 from generated float to obtain the percentage which will be distributed among the
- |          remaining die faces
- |
- |      Note(s):  Weights must sum to 1
- |
- |  die_state(self) -> list
- |      Takes no arguments
- |
- |      Returns a copy of the private data frame
- |
- |  roll_die(self, how_many_times: int = 1) -> list
- |      Simulates a dice roll with weighted probabilities for each face.
- |
- |      Arg Checks:
- |          how_many_times: number of requested die rolls; default is 1 roll
- |
- |      Returns:
- |          a python list of outcomes
- |
+## die.py
+<code>
+    class Die:
+    """
+    A class representing a Die (2-Face: Die of type Coin or 6-Face Die )
+
+    Attributes:
+       
+        _privateDataFrame (pd.DataFrame): Used to hold both die face and weight data points
+    
+    Methods:
+        __init__():
+        change_die_weight() 
+        roll_die() defaults to (1)
+        die_state()
+    """
+
+</code>
+
+## game.py
+<code>
+class Game:
+    """
+    A class representing a game of rolling one or more similar dice (Die objects) one or more times
+    Game objects have a behavior to play a game, i.e. to roll all of the dice a given number of times
+    Game objects only keep the results of their most recent play
 
 
+    Attributes:
+       
+        self._privateGameDataFrame (pd.DataFrame): a private variable Used to hold game results
+    
+    Methods:
+        play() 
+        playResults() Defaults to wide dataframe type (w)
+    """
 
- |  Game(theDice: list[theDie.die.Die]) -> None
- |
- |  A class representing a game of rolling one or more similar dice (Die objects) one or more times
- |  Game objects have a behavior to play a game, i.e. to roll all of the dice a given number of times
- |  Game objects only keep the results of their most recent play
- |
- |
- |  Attributes:
- |
- |      self._privateGameDataFrame (pd.DataFrame): a private variable Used to hold game results
- |
- |  Methods:
- |      play()
- |      playResults()
- |
- |  Methods defined here:
- |
- |  __init__(self, theDice: list[theDie.die.Die]) -> None
- |      Initializes Game Class with Python list, as a single paramter, that contains one or more dice
- |
- |          self.theDice = theDice
- |          self._privateGameDataFrame = pd.DataFrame = pd.DataFrame(emptyDict)
- |
- |
- |      Args:
- |          theDice (list):  NumPy array of Die faces where array dtype(strings|numbers)
- |
- |      Raises:
- |          TypeError: If container for Die objects is not of type list
- |          TypeError: If list item is not a Die object
- |
- |      Returns:
- |          None
- |
- |  play(self, how_many_rolls: int) -> None
- |      Takes an integer parameter to specify how many times the dice should be rolled and
- |          saves the result of the play to self._privateGameDataFrame
- |
- |          Using the playResults methond, self._privateGameDataFrame will be returned
- |          in wide format unless narrow form (n) is requested.
- |
- |
- |      Args:
- |          how_many_rolls (int):  How many times to roll dice
- |
- |      Raises:
- |          None
- |
- |      Returns:
- |          None
- |
- |  playResults(self, df_frame_type: str = 'w') -> pandas.core.frame.DataFrame
- |      Returns a copy of self._privateGameDataFrame in wide form (w) (DEFAULT) to the user
- |         unless narrow form (n) is requested.
- |
- |          Using the playResults methond, self._privateGameDataFrame will be returned
- |          in wide format unless narrow form (n) is requested.
- |
- |
- |      Args:
- |          df_frame_type (str):  parameter to return the data frame in narrow (n) or wide (w) form where wide is DEFAULT
- |
- |      Raises:
- |          ValueError: if the user passes an invalid option for narrow or wide
- |
- |      Returns:
- |          None
+          
+</code>
+## analyzer.py
+<code>
+ 
+class Analyzer:
+    """
+    A class that provides descriptive statistical properties about a game object
 
 
+    Attributes:
+       
+        None
+    
+    Methods:
+        jackpots() 
+        dieFaceCounter()
+        dieComboCounter()
+        diePermutationCounter()
+    """
 
+  
+</code>
 
-class Analyzer(builtins.object)
- |  Analyzer(theGame: game.game.Game) -> None
- |
- |  A class that provides descriptive statistical properties about a game object
- |
- |
- |  Attributes:
- |
- |      None
- |
- |  Methods:
- |      jackpots()
- |      dieFaceCounter()
- |      dieComboCounter()
- |      diePermutationCounter()
- |
- |  Methods defined here:
- |
- |  __init__(self, theGame: game.game.Game) -> None
- |      Initializes Analyzer Class with a Game object, as a single paramter
- |
- |          self.theGame = theGame
- |
- |      Args:
- |          theGame (Game):  Game object with game results
- |
- |      Raises:
- |          ValueError: If the parameter is not a Game object
- |
- |      Returns:
- |          None
- |
- |  dieComboCounter(self) -> pandas.core.frame.DataFrame
- |      Computes the distinct combinations of faces rolled, along with their counts
- |
- |          NOTE:  Combinations are order-independent and may contain repetitions
- |                 The data frame should have a MultiIndex of distinct combinations and a column for the associated counts
- |
- |
- |      Args:
- |          None
- |
- |      Raises:
- |          None
- |
- |      Returns:
- |          pd.DataFrame of results
- |
- |  dieFaceCounter(self) -> pandas.core.frame.DataFrame
- |      Computes how many times a given face is rolled in each event.
- |
- |          For Example:
- |          If a roll of five dice has all sixes,
- |          then the counts for this roll would be 5 for the face value 6 and 0 for the other faces
- |
- |
- |      Args:
- |          None
- |
- |      Raises:
- |          None
- |
- |      Returns:
- |          pd.DataFrame of results
- |
- |  diePermutationCounter(self) -> pandas.core.frame.DataFrame
- |      Computes the distinct permutations of faces rolled, along with their counts
- |
- |          NOTE:  Permutations are order-dependent and may contain repetitions
- |                 The data frame should have a MultiIndex of distinct permutations and a column for the associated counts
- |
- |
- |      Args:
- |          None
- |
- |      Raises:
- |          None
- |
- |      Returns:
- |          pd.DataFrame of results
- |
- |  jackpots(self) -> int
- |      Computes how many times the game resulted in a jackpot
- |
- |          A jackpot is a result in which all faces are the same, e.g. all ones for a six-sided die
- |
- |
- |
- |      Args:
- |          None
- |
- |      Raises:
- |          None
- |
- |      Returns:
- |          None
- |

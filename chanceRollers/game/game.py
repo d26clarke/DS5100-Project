@@ -87,7 +87,7 @@ class Game:
 
 
         Args:
-            how_many_rolls (int):  How many times to roll dice
+            how_many_rolls (int):  How many times to roll dice; defaults to 1
 
         Raises:
             None
