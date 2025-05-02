@@ -100,7 +100,7 @@ API description
 
     Attributes:
        
-        _privateDataFrame (pd.DataFrame): Used to hold both die face and weight data points
+        
     
     Methods:
         __init__():
@@ -119,10 +119,9 @@ class Game:
     Game objects have a behavior to play a game, i.e. to roll all of the dice a given number of times
     Game objects only keep the results of their most recent play
 
-
     Attributes:
        
-        self._privateGameDataFrame (pd.DataFrame): a private variable Used to hold game results
+        
     
     Methods:
         play() 
