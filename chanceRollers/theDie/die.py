@@ -2,11 +2,9 @@ import pandas as pd
 import numpy as np
 import random
 
-# RESOURCE: https://github.com/Ryota-Kawamura/Mathematics-for-Machine-Learning-and-Data-Science-Specialization/blob/main/Course-3/Week-2/C3_W2_Lab_2_Dice_Simulations.ipynb
-
 class Die:
     """
-    A class representing a Die (2-Face: Die of type Coin or 6-Face Die )
+    A class representing multi-face Die
 
     Attributes:
        
@@ -39,8 +37,6 @@ class Die:
             None
         """
 
-        #print(f"The Inital Type: {type(theDie)}")
-
         #Must be NumPy Array
         if not type(theDie) is np.ndarray:
             raise TypeError("The die must be of type NumPy Array!") 
@@ -57,8 +53,6 @@ class Die:
         for idx, row in self._privateDataFrame.iterrows():
             #Modify Face Value
             self._privateDataFrame.loc[idx] = 1.0
-            #print(f"Index: {idx}")
-            #print(f"Weight for {idx}: {row['dieValue']}")
 
     # Instance method change_die_weight
     def change_die_weight(self, face_name: str, new_weight: float) -> None:
@@ -81,7 +75,7 @@ class Die:
         #face_name must Exist in the die array
         if not (face_name in self._privateDataFrame.index):
              raise IndexError(f"{face_name} does not exist in the die array: ")
-        #print(f"New Weight Type: {type(new_weight)}" )
+        
         #new_weight must be numeric or castable as numeric
         if not isinstance(new_weight, (int, float)):  
             raise TypeError(f"new weight request must be of type integer or float: {new_weight}")

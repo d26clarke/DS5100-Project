@@ -80,22 +80,9 @@ class Analyzer:
         #print(f"Number of Rows in DataFrame: {rowsInDataFrame}")
         #Use the following for Loop to get to each Series 
         for rowIdx in range(1,rowsInDataFrame + 1):
-            #print(f"Row Index: {rowIdx}")
-            #Use the series duplicated function to determine if there is a jackpot
-            #If the number of duplicates plus one matches the len of the series then 
-            #we have a jackpot.  NOTE:  We have to add one to the number of duplicates since the first element 
-            #in the series is not seen as a duplicate.
-            #print(f"**********************")
-            #print(f"DATA: \n{type(diePlayResultsFrame.loc[rowIdx])}")
-            #print(f"Length of the Series: {len(diePlayResultsFrame.loc[rowIdx])}")
-            #print(f"**********************")
-
             duplicates: pd.Series = diePlayResultsFrame.loc[rowIdx].duplicated()
-            #print(f"The Duplicates \n{duplicates}")
             num_duplicates: np.int64 = duplicates.sum()
-            #print(f"The Number of Duplicates \n{num_duplicates}")
-            #print(f"Corrected Offset: {num_duplicates + 1}")
-
+            
             if len(diePlayResultsFrame.loc[rowIdx]) == num_duplicates + 1:
                 #We have a jackpot
                 numberOfJackpots += 1
@@ -193,12 +180,6 @@ class Analyzer:
 
         dfMultiIndex = diePlayResultsFrame.set_index(diePlayResultsFrame.columns.to_list(), append=True)
         dfMultiIdxPermCnt = dfMultiIndex.groupby(diePlayResultsFrame.columns.to_list()).size().to_frame("Occurence")
-
-        #new_names = ["#"+str(i)+" die's value" for i in range(1, len(self._game._list_of_die)+1)]
-        #temp_df = self._game.show_result()
-        #temp_df.columns = new_names
-        #x = list(range(len(self._game._list_of_die)))
-        #return temp_df.set_index(new_names).sort_index().groupby(level=x).size().to_frame("Occurence")
 
         return dfMultiIdxPermCnt
 

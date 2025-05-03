@@ -92,11 +92,11 @@ Installation:
 API description
 ----------------------
 
-## die.py
+<h3>die.py</h3>
 <code>
     class Die:
     """
-    A class representing a Die (2-Face: Die of type Coin or 6-Face Die )
+    A class representing multi-face Die
 
     Attributes:
        
@@ -111,7 +111,7 @@ API description
 
 </code>
 
-## game.py
+<h3>game.py</h3>
 <code>
 class Game:
     """
@@ -130,7 +130,7 @@ class Game:
 
           
 </code>
-## analyzer.py
+<h3>analyzer.py</h3>
 <code>
  
 class Analyzer:

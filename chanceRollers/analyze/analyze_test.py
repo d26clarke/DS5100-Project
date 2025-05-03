@@ -1,12 +1,10 @@
 
-from analyzer import Analyzer
 import unittest
 import numpy as np
 
 from theDie.die import Die
 from game.game import Game
-
-
+from analyze.analyzer import Analyzer
 
 # Create variable to capture results when necessary
 results: str = ""

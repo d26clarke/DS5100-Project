@@ -66,9 +66,6 @@ class Game:
         checkDieFaces: bool = all(len(x.die_state()) == 6 for x in theDice)   #Six Face Die
         checkAlphaDieFaces: bool = all(len(x.die_state()) == 26 for x in theDice)   #Alphabet Face Die
 
-        #print(f"Staus of checkCoinFaces: {checkCoinFaces}\n")
-        #print(f"Staus of checkDieFaces: {checkDieFaces}\n")
-
         #Raise error if die objects do not have the same number of faces
         if checkCoinFaces == False and checkDieFaces == False and checkAlphaDieFaces == False:
             #print(f"DEBUG1:We have an issue!\n")
